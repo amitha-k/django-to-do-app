@@ -1,11 +1,6 @@
 pipeline {
     agent { label 'worker-node' }
 
- tools {
-        jdk 'JDK21'
-        sonarQubeScanner 'SonarScanner'
-    }
-
     environment {
         APP_NAME = "django-to-do-app"
         ARTIFACT = "django-to-do-app.zip"
