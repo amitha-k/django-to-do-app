@@ -57,25 +57,20 @@ pipeline {
             }
         }
 
-stage('SonarQube Analysis') {
-    steps {
-        script {
-            def scannerHome = tool 'SonarScanner'
-
-            withSonarQubeEnv('sonarqube') {
-                sh """
-                ${scannerHome}/bin/sonar-scanner \
-                -Dsonar.projectKey=django-to-do-app \
-                -Dsonar.projectName=django-to-do-app \
-                -Dsonar.sources=. \
-                -Dsonar.python.version=3
-                """
+	 stage('SonarQube Analysis') {
+            steps {
+                withSonarQubeEnv('sonarqube') {
+                    sh '''
+                        sonar-scanner \
+                        -Dsonar.projectKey=django-to-do-app \
+                        -Dsonar.projectName=django-to-do-app \
+                        -Dsonar.sources=. \
+                        -Dsonar.python.version=3
+                    '''
+                }
             }
         }
-    }
-}
-
-       
+        
         stage('Deploy Application') {
             steps {
                 sh '''
