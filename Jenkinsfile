@@ -84,6 +84,21 @@ pipeline {
         }
 
     }
+	
+	stage('Package & Upload to JFrog') {
+            steps {
+                sh '''
+                echo "Packaging Application..."
+
+                zip -r ${ARTIFACT} . -x "venv/*" ".git/*"
+
+                echo "Uploading Artifact to JFrog..."
+
+                jf rt upload ${ARTIFACT} python-local/
+                '''
+            }
+        }
+
 
     post {
 
