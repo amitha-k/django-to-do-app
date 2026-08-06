@@ -1,6 +1,11 @@
 pipeline {
     agent { label 'worker-node' }
 
+ tools {
+        jdk 'JDK21'
+        sonarQubeScanner 'SonarScanner'
+    }
+
     environment {
         APP_NAME = "django-to-do-app"
         ARTIFACT = "django-to-do-app.zip"
@@ -53,20 +58,20 @@ pipeline {
             }
         }
 
-        stage('SonarQube Analysis') {
+	 stage('SonarQube Analysis') {
             steps {
                 withSonarQubeEnv('sonarqube') {
                     sh '''
-                    sonar-scanner \
-                      -Dsonar.projectKey=django-to-do-app \
-                      -Dsonar.projectName=django-to-do-app \
-                      -Dsonar.sources=. \
-                      -Dsonar.python.version=3
+                        sonar-scanner \
+                        -Dsonar.projectKey=django-to-do-app \
+                        -Dsonar.projectName=django-to-do-app \
+                        -Dsonar.sources=. \
+                        -Dsonar.python.version=3
                     '''
                 }
             }
         }
-
+        
         stage('Deploy Application') {
             steps {
                 sh '''
